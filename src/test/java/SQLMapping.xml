@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<sql-mapping>
+	<package name="a">
+		<query name="listAll">
+			<sql> from Category c order by c.orderNo </sql>
+		</query>
+		<query name="listTop">
+			<sql> from Category c where c.admin=? and c.parentId='' order by
+				c.orderNo
+			</sql>
+		</query>
+		<query name="listSubs">
+			<sql> from Category c where c.parentId=? order by c.orderNo </sql>
+		</query>
+		<query name="exitName">
+			<sql><![CDATA[ from Category c where c.name=? and c.id<>? and c.admin=? and c.parentId=? order by c.orderNo]]>
+			</sql>
+		</query>
+	</package>
+
+	<package name="b">
+		<query name="list">
+			<sql> from Article c where c.category.id = ? order by c.updateTime
+				desc </sql>
+		</query>
+		<query name="listByFiler">
+			<sql>select c from Article c,FormValue v where c.category.id = ? and
+				v.itemId =c.id</sql>
+			<appender name="filterId"> and v.element.id=?</appender>
+			<appender name="filterValue"> and v.value like ?</appender>
+			<appender name="order">group by c.id ,c.title,c.updateTime,c.admin
+				order by c.updateTime desc  </appender>
+		</query>
+	</package>
+</sql-mapping>

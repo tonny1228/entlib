@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appSettings location="apps.properties" />
+	<messageResources name="resources" />
+	<exceptionHandling>
+		<policy name="log">
+			<type name="Runtime Exceptions" class="java.lang.RuntimeException"
+				type="thrownewexception">
+				<handler name="Log Handler" class="org.llama.library.exception.LogHandler" />
+				<handler name="Replace Handler" class="org.llama.library.exception.ReplaceHandler"
+					replaceException="java.lang.RuntimeException"
+					replaceExceptionMessage="失败" />
+
+			</type>
+			<type name="All Exceptions" class="java.lang.Exception" type="rethrow">
+				<handler name="wrap Handler" class="org.llama.library.exception.WrapHandler"
+					wrapException="java.lang.Exception" wrapExceptionMessage="失败" />
+			</type>
+			<type name="All Exceptions" class="java.io.IOException" type="none">
+				<handler name="wrap Handler" class="org.llama.library.exception.WrapHandler"
+					wrapException="java.lang.Exception" wrapExceptionMessage="失败" />
+			</type>
+		</policy>
+		<policy name="dao">
+			<type name="Runtime Exceptions" class="java.lang.RuntimeException"
+				type="thrownewexception">
+				<handler name="Log Handler" class="org.llama.library.exception.LogHandler" />
+			</type>
+			<type name="All Exceptions" class="java.lang.Exception" type="rethrow">
+				<handler name="wrap Handler" class="org.llama.library.exception.WrapHandler"
+					wrapException="java.lang.Exception" wrapExceptionMessage="失败" />
+			</type>
+			<type name="All Exceptions" class="java.io.IOException" type="none">
+				<handler name="wrap Handler" class="org.llama.library.exception.WrapHandler"
+					wrapException="java.lang.Exception" wrapExceptionMessage="失败" />
+			</type>
+		</policy>
+	</exceptionHandling>
+	<SQLMappings dbms="${db.type}">
+		<file>config/SQLMapping-*.xml</file>
+	</SQLMappings>
+	<security coder="base64">
+		<cryptography name="md5" type="MD5"  coder="hex"/>
+		<cryptography name="md5base64" coder="base64" type="MD5" />
+		<cryptography name="sha1" type="SHA-1" />
+		<cryptography name="passwordDecoder" type="DESede" mode="ECB"
+			padding="PKCS5Padding" key="37bB2vTlelv7JbU42YNrv9+2wdr05Xpb" />
+	</security>
+
+	<validation>
+		<validators>
+			<validator name="String length validator1"
+				class="org.llama.library.validation.validator.StringLengthValidator"
+				min="2" max="5" messageTemplate="密码长度{0}-{1}" />
+		</validators>
+		<class name="org.llama.library.validate.TestBean">
+			<field name="name">
+				<validator
+					class="org.llama.library.validation.validator.AndCompositeValidator">
+					<validator name="String length validator2"
+						class="org.llama.library.validation.validator.StringLengthValidator"
+						min="2" max="5" messageTemplate="密码长度{0}-{1}" />
+					<validator
+						class="org.llama.library.validation.validator.OrCompositeValidator">
+						<validator name="String length validator2"
+							class="org.llama.library.validation.validator.NotNullValidator"
+							min="2" max="5" messageTemplate="密码长度{0}-{1}" />
+						<validator name="age validator4"
+							class="org.llama.library.validation.validator.NumberRangeValidator"
+							lowerBound="2" upperBound="50" lowerType="exclusive" upperType="inclusive"
+							messageTemplate="岁数{0}-{1}" />
+					</validator>
+					<validator name="String reg validator3"
+						class="org.llama.library.validation.validator.RegexValidator"
+						regex="^\d+$" messageTemplate="应该是数字啊" />
+				</validator>
+			</field>
+			<field name="age">
+				<validator name="age validator4"
+					class="org.llama.library.validation.validator.NumberRangeValidator"
+					lowerBound="2" upperBound="50" lowerType="exclusive" upperType="inclusive"
+					messageTemplate="岁数{0}-{1}" />
+			</field>
+		</class>
+	</validation>
+</configuration>
