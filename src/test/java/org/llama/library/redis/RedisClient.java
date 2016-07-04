@@ -1,10 +1,13 @@
 package org.llama.library.redis;
 
+import org.junit.Test;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.ShardedJedis;
 import redis.clients.jedis.ShardedJedisPool;
+
+import java.util.Set;
 
 /**
  * Created by Tonny on 2016/6/8.
@@ -17,8 +20,6 @@ public class RedisClient {
 
     public RedisClient() {
         initialPool();
-        initialShardedPool();
-        shardedJedis = shardedJedisPool.getResource();
         jedis = jedisPool.getResource();
 
 
@@ -35,12 +36,22 @@ public class RedisClient {
         config.setMaxWaitMillis(1000l);
         config.setTestOnBorrow(true);
 
-        jedisPool = new JedisPool(config, "127.0.0.1", 6379);
+        jedisPool = new JedisPool(config, "192.168.0.242", 6379);
     }
 
 
+    @Test
     public void show() {
-       
+        jedis.set("name", "tonny");
+        Set<String> keys = jedis.keys("*");
+        for (String key : keys) {
+            System.out.println(key + ":");
+            System.out.println(jedis.ttl(key));
+            System.out.println(jedis.persist(key));
+            System.out.println(jedis.ttl(key));
+            System.out.println(jedis.type(key));
+        }
+
     }
 
 }
