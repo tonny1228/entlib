@@ -1,6 +1,9 @@
 package org.llama.library.cache;
 
+import org.apache.commons.lang.SerializationUtils;
 import redis.clients.jedis.Jedis;
+
+import java.io.Serializable;
 
 /**
  * redis的缓存客户端
@@ -10,18 +13,12 @@ public class RedisClient implements Cache {
 
     private Jedis jedis;
 
-    public void putInCache(String key, Object value) {
-        if (value instanceof String)
-            set(key, (String) value);
+    public void putInCache(String key, Serializable value) {
+        jedis.set(key.getBytes(), SerializationUtils.serialize(value));
     }
 
-    private String set(String key, String value) {
-        return jedis.set(key, value);
-    }
-
-
-    public void putInCache(String key, Object value, int seconds) {
-
+    public void putInCache(String key, Serializable value, int seconds) {
+        jedis.set(key.getBytes(), SerializationUtils.serialize(value));
     }
 
     public <T> T getFromCache(String key) {

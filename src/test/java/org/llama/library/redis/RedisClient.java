@@ -7,6 +7,9 @@ import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.ShardedJedis;
 import redis.clients.jedis.ShardedJedisPool;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -54,4 +57,25 @@ public class RedisClient {
 
     }
 
+
+    @Test
+    public void testMap() {
+        Map map = new HashMap();
+        map.put("name", "xinxin");
+        map.put("age", 1);
+        map.put("qq", "123456");
+        jedis.hmset("user", map);
+        List<String> rsmap = jedis.hmget("user", "name");
+        System.out.println(rsmap);
+        System.out.println(jedis.hkeys("user"));
+    }
+
+
+    @Test
+    public void testList() {
+        jedis.lpush("java framework","spring");
+        jedis.lpush("java framework","struts");
+        jedis.rpush("java framework","hibernate");
+        System.out.println(jedis.lrange("java framework",0,-1));
+    }
 }
