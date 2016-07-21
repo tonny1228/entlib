@@ -4,7 +4,7 @@
 
     <groupId>org.llama</groupId>
     <artifactId>entlib</artifactId>
-    <version>1.5.2</version>
+    <version>1.5.3</version>
     <packaging>jar</packaging>
 
     <name>Enterprise Library Core</name>

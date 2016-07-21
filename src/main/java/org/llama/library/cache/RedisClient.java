@@ -13,12 +13,12 @@ public class RedisClient implements Cache {
 
     private Jedis jedis;
 
-    public void putInCache(String key, Serializable value) {
-        jedis.set(key.getBytes(), SerializationUtils.serialize(value));
+    public void putInCache(String key, Object value) {
+        jedis.set(key.getBytes(), SerializationUtils.serialize((Serializable) value));
     }
 
-    public void putInCache(String key, Serializable value, int seconds) {
-        jedis.set(key.getBytes(), SerializationUtils.serialize(value));
+    public void putInCache(String key, Object value, int seconds) {
+        jedis.set(key.getBytes(), SerializationUtils.serialize((Serializable) value));
     }
 
     public <T> T getFromCache(String key) {

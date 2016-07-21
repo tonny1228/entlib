@@ -15,7 +15,7 @@ public interface Cache {
 	 * @param key 数据的键值
 	 * @param value 数据
 	 */
-	void putInCache(String key, Serializable value);
+	void putInCache(String key, Object value);
 
 	/**
 	 * 将数据对象缓存起来
@@ -24,7 +24,7 @@ public interface Cache {
 	 * @param value 数据
 	 * @param seconds 超时时间，超时后，数据为空
 	 */
-	void putInCache(String key, Serializable value, int seconds);
+	void putInCache(String key, Object value, int seconds);
 
 	/**
 	 * 通过键值查询数据
